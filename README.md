@@ -1,18 +1,19 @@
-# FIFA World Cup Win Probability Predictor  ⚽
+# FIFA World Cup Win Probability Predictor ⚽
 
-A Machine Learning project that predicts the win probability of teams in FIFA World Cup matches based on match statistics like possession, shots, fouls, and expected goals (xG).
+A Machine Learning project that predicts the win probability of FIFA World Cup matches using historical match data and FIFA rankings.
 
 ## Project Overview
 
-This project analyzes historical FIFA World Cup match data from 1974 to 2022 and builds a Random Forest classifier to predict whether the home team will win a match based on in-game statistics.
+This project analyzes 49,000+ international football match results from 1872 to 2024 and FIFA ranking data to build a Random Forest classifier that predicts whether the home team wins, away team wins, or the match ends in a draw.
 
 ## Features
 
 - Exploratory Data Analysis (EDA) with visualizations
-- Feature Engineering to create target variables
-- Random Forest ML model with 77% accuracy
-- Win Probability Predictor function for any two teams
-- Feature Importance analysis to find what stats matter most
+- Filtered 1,068 actual FIFA World Cup matches from 49,000+ records
+- Merged FIFA ranking points for each team at the time of the match
+- Random Forest ML model for 3-class outcome prediction
+- Win Probability Predictor function for any two teams using latest FIFA rankings
+- Visualizations: Top 10 winning teams, goals per year trend, match outcome distribution
 
 ## Tech Stack
 
@@ -22,18 +23,30 @@ This project analyzes historical FIFA World Cup match data from 1974 to 2022 and
 - Matplotlib
 - Seaborn
 - Scikit-learn
+- Git
 
-## Dataset
+## Datasets
 
-FIFA World Cup Enhanced Dataset (1974-2022) sourced from Kaggle.
-Contains match statistics including possession, shots, shots on target, fouls, yellow cards, red cards, expected goals (xG), and attendance.
+- `results.csv` — 49,547 international football results (1872–2024) from Kaggle
+- `fifa_rankings.csv` — FIFA ranking points for all teams over time (1992–2022)
+- `fifa_matches.csv` — FIFA match data with rankings
+- `goalscorers.csv` — Goal scorer details per match
+- `shootouts.csv` — Penalty shootout results
 
 ## Key Findings
 
-- The model achieved **77% accuracy** on test data
-- **Fouls, shots on target, and away fouls** were the top 3 most important features for predicting a win
-- Home teams win more frequently than away teams in World Cup matches
-- 1982 World Cup had the highest average goals per match
+- **Brazil** is the most winning team in World Cup history
+- Average goals per match have **declined significantly** since the 1950s — modern football is more defensive
+- **45.7% of World Cup matches** are home wins, showing strong home advantage
+- Draws are the hardest outcome to predict — even with ranking data
+- Adding FIFA ranking points as features improved away win prediction significantly
+
+## Model Performance
+
+- 3-class classification: Home Win, Away Win, Draw
+- Accuracy: ~45% (vs 33% random baseline)
+- Home win precision: 53%, Away win precision: 53%
+- Draws remain difficult to predict — a known challenge in sports analytics
 
 ## How to Run
 
@@ -51,17 +64,13 @@ pip install pandas numpy matplotlib seaborn scikit-learn jupyter
 
 ## Win Probability Predictor
 
-You can predict win probability for any match by calling:
-
 ```python
-predict_win_probability(
-    possession_home=55, possession_away=45,
-    shots_home=14, shots_away=10,
-    shots_ontarget_home=6, shots_ontarget_away=4,
-    home_xg=1.8, away_xg=1.2,
-    fouls_home=12, fouls_away=14,
-    yellow_cards_home=1, yellow_cards_away=2
-)
+predict_match("Brazil", "Argentina")
+
+# Output:
+# Brazil win probability: 46.0%
+# Argentina win probability: 24.0%
+# Draw probability: 30.0%
 ```
 
 ## Project Structure
@@ -69,11 +78,18 @@ predict_win_probability(
 ```
 fifa-worldcup-predictor/
     Ball data/
-        fifa_world_cup_enhanced_1974_2022.csv
+        results.csv
+        fifa_rankings.csv
+        fifa_matches.csv
+        fifa_teams.csv
+        goalscorers.csv
+        shootouts.csv
+        former_names.csv
     worldcup.ipynb
     README.md
 ```
 
 ## Author
 
-Om Raut
+Om Raut  
+GitHub: github.com/Omraut18
